@@ -1,5 +1,13 @@
-   bench_records = []
-   for m_name, metrics in engine.benchmarks.items():
+import streamlit as st
+import pandas as pd
+
+# ... your engine, df_data, CITY_DATA setup here ...
+
+tab1, tab2, tab3 = st.tabs(["Predict", "Insights", "Benchmarks"])  # your actual tabs
+
+with tab3:  # the tab this block belongs to
+    bench_records = []
+    for m_name, metrics in engine.benchmarks.items():
         bench_records.append({
             "Algorithm": m_name,
             "R² Score (Goodness of Fit)": f"{metrics['R2_Score']:.4f}",
@@ -9,19 +17,24 @@
             "Rank": "🏆 Champion" if m_name == engine.best_model_name else "Candidate"
         })
     st.dataframe(pd.DataFrame(bench_records), use_container_width=True, hide_index=True)
-    
+
     st.markdown("---")
     st.markdown("##### Verified Listing Dataset Explorer")
     st.caption(f"Showing sample data from the {len(df_data)} verified Indian metro property listings:")
-    
+
     filter_city = st.selectbox("Explore Listings in City", ["All"] + list(CITY_DATA.keys()), key="explorer_city")
     if filter_city == "All":
         preview_df = df_data.head(50)
     else:
         preview_df = df_data[df_data["City"] == filter_city].head(50)
-        
-    st.dataframe(preview_df[["City", "Locality", "BHK", "Property_Type", "Area_SqFt", "Furnishing", "Age_Years", "Price_Lakhs", "Price_Per_SqFt"]], use_container_width=True)
-# Footer
+
+    st.dataframe(
+        preview_df[["City", "Locality", "BHK", "Property_Type", "Area_SqFt",
+                    "Furnishing", "Age_Years", "Price_Lakhs", "Price_Per_SqFt"]],
+        use_container_width=True
+    )
+
+# Footer (column 0, outside the tab)
 st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #94A3B8; font-size: 0.85rem;">
