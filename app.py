@@ -1,9 +1,5 @@
-with tab_benchmarks:
-    st.subheader("🧪 Machine Learning Benchmarking & Accuracy Metrics")
-    st.caption("Rigorous multi-model evaluation on held-out test data (80/20 train-test split).")
-    
-    bench_records = []
-    for m_name, metrics in engine.benchmarks.items():
+   bench_records = []
+   for m_name, metrics in engine.benchmarks.items():
         bench_records.append({
             "Algorithm": m_name,
             "R² Score (Goodness of Fit)": f"{metrics['R2_Score']:.4f}",
